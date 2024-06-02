@@ -3,6 +3,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { BACKEND_URL } from "./consts";
 import axios from "axios";
 
+const REFETCH_INTERVAL = 1000;
+
 function App() {
     const [inputValue, setInputValue] = useState("");
 
@@ -18,7 +20,7 @@ function App() {
                 lastPriceTime: number | null;
             }[];
         },
-        refetchInterval: 1000,
+        refetchInterval: REFETCH_INTERVAL,
     });
 
     const addStockMutation = useMutation({
