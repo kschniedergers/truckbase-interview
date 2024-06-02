@@ -11,9 +11,11 @@ Terminal 1:
 - `pnpm start`
 
 Terminal 2:
-`cd frontend`
-`pnpm install`
-`pnpm start`
+- `cd frontend`
+- `pnpm install`
+- `pnpm start`
+
+(should work with other package managers as well)
 
 Then go to `http://localhost:5173/` in your browser.
 
