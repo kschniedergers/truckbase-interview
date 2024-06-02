@@ -43,7 +43,7 @@ app.post("/watchlist/:ticker", async (req, res) => {
         return;
     }
 
-    const dupeCheck = await db.select().from(watchlist).where(eq(watchlist.ticker, req.params.ticker));
+    const dupeCheck = await db.select().from(watchlist).where(eq(watchlist.ticker, req.params.ticker.toUpperCase()));
     if (dupeCheck.length > 0) {
         res.status(409).send("Ticker already exists in watchlist");
         return;
