@@ -15,5 +15,7 @@ Terminal 2:
 `pnpm install`
 `pnpm start`
 
+Then go to `http://localhost:5173/` in your browser.
+
 ## Notes
 Theres a lot of random files created by the vite script, etc, the main code I wrote is in `server/src` and `frontend/src/App.tsx`.
