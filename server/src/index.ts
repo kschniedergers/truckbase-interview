@@ -51,7 +51,7 @@ app.post("/watchlist/:ticker", async (req, res) => {
 
     const ret = await db.insert(watchlist).values({
         addedAt: Date.now(),
-        ticker: req.params.ticker,
+        ticker: req.params.ticker.toUpperCase(),
         lastPrice: s.regularMarketPrice?.toString(),
         lastPriceTime: Date.now(),
     });
