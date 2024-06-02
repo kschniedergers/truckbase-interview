@@ -6,9 +6,9 @@ Basic stock tracker built by Kai Schniedergers for the Truckbase interview proce
 This is a monorepo with 2 packages, frontend and server. They both run in the foreground so you will need 2 terminal windows.
 
 Terminal 1:
-`cd server`
-`pnpm install`
-`pnpm start`
+- `cd server`
+- `pnpm install`
+- `pnpm start`
 
 Terminal 2:
 `cd frontend`
