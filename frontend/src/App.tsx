@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { BACKEND_URL } from "./consts";
 import axios from "axios";
