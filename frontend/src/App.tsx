@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { BACKEND_URL } from "./consts";
 import axios from "axios";
 
-const REFETCH_INTERVAL = 1000;
+const REFETCH_INTERVAL = 5 * 1000;
 
 function App() {
     const [inputValue, setInputValue] = useState("");
