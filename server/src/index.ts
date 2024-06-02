@@ -3,25 +3,35 @@ import { getDb } from "./db";
 import { watchlist } from "./db/schemas/watchlist";
 import yahooFinance from "yahoo-finance2";
 import { eq } from "drizzle-orm";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
+app.use(cors());
 
-app.get("/", async (req, res) => {
-    const s = await yahooFinance.quote("AASSPL");
-    console.log(s);
-    console.log(s.regularMarketPrice);
-    res.send("yo");
-});
+// 30 seconds
+const REFRESH_INTERVAL = 30 * 1000;
 
-// app.get("/stock/:ticker", (req, res) => {
-//     res.send(`You requested data for ${req.params.ticker}`);
-// });
+async function refreshPrices() {
+    const db = getDb();
+    const watchlistRes = await db.select().from(watchlist);
+    watchlistRes.forEach(async (stock) => {
+        const s = await yahooFinance.quote(stock.ticker);
+        const ret = await db
+            .update(watchlist)
+            .set({
+                lastPrice: s.regularMarketPrice?.toString(),
+                lastPriceTime: Date.now(),
+            })
+            .where(eq(watchlist.ticker, stock.ticker));
+    });
+}
 
 app.get("/watchlist", async (req, res) => {
     const db = getDb();
     const watchlistRes = await db.select().from(watchlist);
-    res.send(JSON.stringify(watchlistRes));
+    res.json(watchlistRes);
+    return;
 });
 
 app.post("/watchlist/:ticker", async (req, res) => {
@@ -39,9 +49,16 @@ app.post("/watchlist/:ticker", async (req, res) => {
         return;
     }
 
-    const ret = await db.insert(watchlist).values({ addedAt: Date.now(), ticker: req.params.ticker });
-    res.send(ret.lastInsertRowid);
+    const ret = await db.insert(watchlist).values({
+        addedAt: Date.now(),
+        ticker: req.params.ticker,
+        lastPrice: s.regularMarketPrice?.toString(),
+        lastPriceTime: Date.now(),
+    });
+    res.json({ id: ret.lastInsertRowid });
 });
+
+setInterval(refreshPrices, REFRESH_INTERVAL);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
